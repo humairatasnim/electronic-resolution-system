@@ -1,0 +1,35 @@
+<div class="row">
+	<div class="large-5 large-centered columns custom-panel-signin">
+	  <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+	  
+	  <div class="row">
+	    <div class="large-11 large-centered columns signinform-header">
+	    	<%= image_tag("rms-logo.png", :alt => "logo", :width => "70") %>
+	    	<br/><br/>
+	    	<h3>eResolutions</h3>
+	    </div>
+	  </div>
+	  
+	  <div class="row">
+	    <div class="large-10 large-centered columns signinform-fields">
+	      <%= f.label :username, :class => "hidden-labels" %>
+	      <%= f.text_field :username, :placeholder => "username" %>
+	    </div>
+	  </div>
+	  
+	  <div class="row">
+	    <div class="large-10 large-centered columns">
+	      <%= f.label :password, :class => "hidden-labels" %>
+	      <%= f.password_field :password, :placeholder => "password" %>
+	  	</div>
+	  </div>
+	  
+	  <div class="row">
+	    <div class="large-10 large-centered columns signinform-button">
+			<%= f.submit "Login", :class => "button" %>
+	    </div>
+	  </div>
+
+	  <% end %>	  
+	</div>
+</div>

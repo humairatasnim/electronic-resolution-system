@@ -1,0 +1,45 @@
+<%= form_for([@resolution.conference, @resolution]) do |f| %>
+  <% if @resolution.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@resolution.errors.count, "error") %> prohibited this resolution from being saved:</h2>
+
+      <ul>
+      <% @resolution.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :committee_id, 'Select Committee', class: "custom-form-label" %>
+    <%= f.collection_select :committee_id, @resolution.conference.committees, :id, :name, :prompt => "" %>
+  </div>
+  <% if current_user.is?("can approve resolutions") %>
+    <%= f.label :status, "New Status", class: "resolution-list-subheader-text" %>
+    <%= f.collection_select :status_id, Status.where(:id =>1..2), :id, :name %>
+  <% end %>
+  <% if current_user.is?("can pass/fail resolutions") %>
+    <%= f.label :status, "New Status", class: "resolution-list-subheader-text" %>
+    <%= f.collection_select :status_id, Status.where(:id =>2..5), :id, :name %>
+      <div class="field">
+    <%= f.label :votes_for %><br />
+    <%= f.number_field :votes_for %>
+  </div>
+  <div class="field">
+    <%= f.label :votes_against %><br />
+    <%= f.number_field :votes_against %>
+  </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :document %><br />
+    <%= f.file_field :document %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

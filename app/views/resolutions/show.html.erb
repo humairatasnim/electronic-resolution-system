@@ -1,0 +1,114 @@
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="row">
+    <div class="large-11 large-centered columns sidebar-header">
+        <%= image_tag("rms-logo.png", :alt => "logo", :width => "40") %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-10 large-centered columns sidebar-title">
+      <h2><%= current_user.conference.title %></h2>
+      <p><%= current_user.conference.start_date.strftime("%B %d, %Y") %> - <%= current_user.conference.end_date.strftime("%B %d, %Y") %></p>
+    </div>
+  </div>
+
+<% if current_user.is?("can register resolutions") %>
+  <div class="row">
+    <div class="large-10 large-centered columns">
+      <ul class="side-nav">
+        <li><%= link_to '<i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;&nbsp;Upload New Resolution'.html_safe, new_conference_resolution_path %></li>
+        <li><%= link_to '<i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;My Resolutions'.html_safe, my_resolutions_conference_resolutions_path %></li>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+  <div class="row">
+    <div class="large-10 large-centered columns">
+      <ul class="side-nav">
+        <li class="active-link"><%= link_to '<i class="fa fa-list-ul"></i>&nbsp;&nbsp;&nbsp;&nbsp;All Resolutions'.html_safe, conference_resolutions_path %></li>
+        <li><%= link_to '<i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;&nbsp;Registered Resolutions'.html_safe, registered_conference_resolutions_path %></li>
+        <li><%= link_to '<i class="fa fa-thumbs-up"></i>&nbsp;&nbsp;&nbsp;&nbsp;Approved Resolutions'.html_safe, approved_conference_resolutions_path %></li>
+        <li><%= link_to '<i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;&nbsp;Passed Resolutions'.html_safe, passed_conference_resolutions_path %></li>
+        <li><%= link_to '<i class="fa fa-times"></i>&nbsp;&nbsp;&nbsp;&nbsp;Failed Resolutions'.html_safe, failed_conference_resolutions_path %></li>
+        <li><%= link_to '<i class="fa fa-minus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Undebated Resolutions'.html_safe, undebated_conference_resolutions_path %></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-10 large-centered columns custom-divider">
+      <hr/>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-10 large-centered columns">
+      <ul class="side-nav">
+        <li><% if user_signed_in? %><%= link_to '<i class="fa fa-sign-out"></i>&nbsp;&nbsp;&nbsp;&nbsp;Logout'.html_safe, destroy_user_session_path %><% end %></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- Main -->
+<div class="main-section1">
+
+  <!-- Header -->
+  <div class="row">
+    <div class="large-12 columns header">
+      <h1>Resolution #<%= @resolution.id %></h1>
+      <hr/>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns resolution-details">
+      <h2><%= @resolution.title %></h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns resolution-details">
+      <br/><br/>
+      <p>Committee</p>
+      <%= @resolution.committee.name %><br/><br/>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="large-12 columns resolution-details">
+      <br/><br/>
+      <p>Status</p>
+      <%= @resolution.status.name %><br/><br/>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="large-12 columns resolution-details">
+      <br/><br/>
+      <p>Committee</p>
+      <%= @resolution.document_file_name %><br/><br/>
+    </div>
+  </div>
+
+              <div class="row"><br/><br/>
+              <div class="large-10 columns resolution-list-time">Uploaded on <%= @resolution.document_updated_at.strftime("%b %e, %Y %H:%m:%S %p UTC") %> by <%= @resolution.user.username %><br/><br/></div>
+            </div>
+
+            <div class="row resolution-list-links"><div class="large-10 columns">
+              <br/><br/>
+              <i class="fa fa-download"></i>&nbsp;<%= link_to 'Download', @resolution.document.url, class: "major-link" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <% if (current_user.id == @resolution.user_id) && current_user.is?('can register resolutions')%>
+              <i class="fa fa-edit"></i>&nbsp;<%= link_to 'Edit', edit_conference_resolution_path(@resolution.conference, @resolution), class: "major-link" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <i class="fa fa-trash-o"></i>&nbsp;<%= link_to 'Delete', [@resolution.conference, @resolution], :confirm => 'Are you sure you want to delete this resolution? This action cannot be undone.', :method => :delete, class: "major-link" %>
+              <%end%>
+
+              <% if current_user.is?('can approve resolutions') || current_user.is?('can pass/fail resolutions') %>
+              <i class="fa fa-edit"></i>&nbsp;<%= link_to 'Edit', edit_conference_resolution_path(@resolution.conference, @resolution), class: "major-link" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <%end%>
+            </div></div>
+
+</div>
