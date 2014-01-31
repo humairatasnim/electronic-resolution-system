@@ -8,6 +8,7 @@ class AdminAbility
       can :read, ActiveAdmin::Page, :name => "Dashboard"
       can :read, Conference
       can :manage, User
+      can :manage, Resolution
     else
       can :manage, :all
     end

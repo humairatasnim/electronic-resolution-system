@@ -50,7 +50,7 @@ class ResolutionsController < InheritedResources::Base
 
     respond_to do |format|
       if @resolution.save
-        format.html { redirect_to [@resolution.conference, @resolution], notice: 'Resolution was successfully registered.' }
+        format.html { redirect_to [@resolution.conference, @resolution], notice: 'Your resolution has been successfully registered.' }
         format.json { render json: @resolution, status: :created, location: @resolution }
       else
         format.html { render action: "new" }

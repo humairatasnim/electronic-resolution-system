@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140117171216) do
+ActiveRecord::Schema.define(:version => 20140127081740) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "namespace"
@@ -77,20 +77,25 @@ ActiveRecord::Schema.define(:version => 20140117171216) do
     t.datetime "updated_at",    :null => false
   end
 
+  create_table "countries", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "resolutions", :force => true do |t|
+    t.string   "title"
     t.integer  "conference_id"
     t.integer  "committee_id"
+    t.integer  "country_id"
+    t.integer  "status_id",          :default => 1
     t.integer  "user_id"
-    t.integer  "status_id",             :default => 1
-    t.integer  "votes_for"
-    t.integer  "votes_against"
+    t.integer  "num_votes_for"
+    t.integer  "num_votes_against"
+    t.integer  "num_abstentions"
     t.string   "document_file_name"
-    t.string   "document_content_type"
-    t.integer  "document_file_size"
-    t.datetime "document_updated_at"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
-    t.string   "title"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
   end
 
   add_index "resolutions", ["conference_id"], :name => "index_resolutions_on_conference_id"

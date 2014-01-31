@@ -1,24 +1,29 @@
+<ul class="cb-slideshow">
+    <li><span>Image 01</span></li>
+    <li><span>Image 02</span></li>
+    <li><span>Image 03</span></li>
+</ul>
 <div class="row">
 	<div class="large-5 large-centered columns custom-panel-signin">
 	  <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
 	  
 	  <div class="row">
 	    <div class="large-11 large-centered columns signinform-header">
-	    	<%= image_tag("rms-logo.png", :alt => "logo", :width => "70") %>
+	    	<%= image_tag("thimunq-logo-color.png", :alt => "logo") %>
 	    	<br/><br/>
-	    	<h3>eResolutions</h3>
+	    	<h3>Electronic Resolution System</h3>
 	    </div>
 	  </div>
 	  
 	  <div class="row">
-	    <div class="large-10 large-centered columns signinform-fields">
+	    <div class="large-10 large-centered columns signinform-fields signin-text">
 	      <%= f.label :username, :class => "hidden-labels" %>
 	      <%= f.text_field :username, :placeholder => "username" %>
 	    </div>
 	  </div>
 	  
 	  <div class="row">
-	    <div class="large-10 large-centered columns">
+	    <div class="large-10 large-centered columns signin-text">
 	      <%= f.label :password, :class => "hidden-labels" %>
 	      <%= f.password_field :password, :placeholder => "password" %>
 	  	</div>

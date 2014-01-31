@@ -1,34 +1,35 @@
 <!-- Sidebar -->
 <div class="sidebar">
+
   <div class="row">
     <div class="large-11 large-centered columns sidebar-header">
-        <%= image_tag("rms-logo.png", :alt => "logo", :width => "40") %>
+        <%= image_tag("thimunq-logo.png", :alt => "logo", :width => "160") %>
     </div>
   </div>
 
   <div class="row">
     <div class="large-10 large-centered columns sidebar-title">
-      <h2><%= current_user.conference.title %></h2>
+      <h2><%= link_to current_user.conference.title, root_url %></h2>
       <p><%= current_user.conference.start_date.strftime("%B %d, %Y") %> - <%= current_user.conference.end_date.strftime("%B %d, %Y") %></p>
     </div>
   </div>
 
-<% if current_user.is?("can register resolutions") %>
-  <div class="row">
-    <div class="large-10 large-centered columns">
-      <ul class="side-nav">
-        <li><%= link_to '<i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;&nbsp;Upload New Resolution'.html_safe, new_conference_resolution_path %></li>
-        <li><%= link_to '<i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;My Resolutions'.html_safe, my_resolutions_conference_resolutions_path %></li>
-      </ul>
+  <% if current_user.is?("can register resolutions") %>
+    <div class="row">
+      <div class="large-10 large-centered columns">
+        <ul class="side-nav">
+          <li><%= link_to '<i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;&nbsp;Upload New Resolution'.html_safe, new_conference_resolution_path %></li>
+          <li><%= link_to '<i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;My Resolutions'.html_safe, my_resolutions_conference_resolutions_path %></li>
+        </ul>
+      </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
 
   <div class="row">
     <div class="large-10 large-centered columns">
       <ul class="side-nav">
-        <li class="active-link"><%= link_to '<i class="fa fa-list-ul"></i>&nbsp;&nbsp;&nbsp;&nbsp;All Resolutions'.html_safe, conference_resolutions_path %></li>
-        <li><%= link_to '<i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;&nbsp;Registered Resolutions'.html_safe, registered_conference_resolutions_path %></li>
+        <li><%= link_to '<i class="fa fa-list-ul"></i>&nbsp;&nbsp;&nbsp;&nbsp;All Resolutions'.html_safe, conference_resolutions_path %></li>
+        <li><%= link_to '<i class="fa fa-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Registered Resolutions'.html_safe, registered_conference_resolutions_path %></li>
         <li><%= link_to '<i class="fa fa-thumbs-up"></i>&nbsp;&nbsp;&nbsp;&nbsp;Approved Resolutions'.html_safe, approved_conference_resolutions_path %></li>
         <li><%= link_to '<i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;&nbsp;Passed Resolutions'.html_safe, passed_conference_resolutions_path %></li>
         <li><%= link_to '<i class="fa fa-times"></i>&nbsp;&nbsp;&nbsp;&nbsp;Failed Resolutions'.html_safe, failed_conference_resolutions_path %></li>
@@ -51,14 +52,29 @@
     </div>
   </div>
 </div>
-<!-- Main -->
-<div class="main-section1">
 
-  <!-- Header -->
+<!-- Main -->
+<div class="main-section-internal">
+
+  <% if notice %>
+    <div class="row">
+      <div class="large-12 columns custom-alert-success">
+        <p><%= notice %></p>
+      </div>
+    </div>
+  <% end %>
+
   <div class="row">
     <div class="large-12 columns header">
       <h1>Resolution #<%= @resolution.id %></h1>
       <hr/>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns resolution-header">
+      <br/>
+      <p><%= @resolution.committee.name %></p>
     </div>
   </div>
 
@@ -69,46 +85,78 @@
   </div>
 
   <div class="row">
-    <div class="large-12 columns resolution-details">
+    <div class="large-10 columns resolution-user-details">
+      <p>
+        <i class="fa fa-globe"></i>&nbsp;&nbsp;<%=  @resolution.country.name %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <i class="fa fa-user"></i>&nbsp;&nbsp;<%=  @resolution.user.username %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <i class="fa fa-clock-o"></i>&nbsp;&nbsp;<%=  @resolution.created_at.strftime('%e-%m-%Y %H:%m:%S %Z ') %>
+      </p>
       <br/><br/>
-      <p>Committee</p>
-      <%= @resolution.committee.name %><br/><br/>
     </div>
   </div>
 
+  <div class="row form-item">
 
-  <div class="row">
-    <div class="large-12 columns resolution-details">
-      <br/><br/>
-      <p>Status</p>
-      <%= @resolution.status.name %><br/><br/>
+    <div class="large-5 columns">
+      <div class="form-label">
+        <% if @resolution.status_id == 1 %>
+          <div class="resolution-status1 registered">
+            <p><i class="fa fa-circle"></i> Registered</p>
+          </div>
+        <% elsif @resolution.status_id == 2 %>
+          <div class="resolution-status1 approved">
+            <p><i class="fa fa-thumbs-up"></i> Approved</p>
+          </div>
+        <% elsif @resolution.status_id == 3 %>
+          <div class="resolution-status1 passed">
+            <p><i class="fa fa-check"></i> Passed</p>
+
+            <div class="vote-details">Votes for: <%= @resolution.num_votes_for %></div>
+            <div class="vote-details">Votes against: <%= @resolution.num_votes_against %></div>
+            <div class="vote-details">Abstentions: <%= @resolution.num_abstentions %></div>
+          </div>
+        <% elsif @resolution.status_id == 4 %>
+          <div class="resolution-status1 failed">
+            <p><i class="fa fa-cross"></i> Failed</p>
+          </div>
+        <% elsif @resolution.status_id == 5 %>
+          <div class="resolution-status1 undebated">
+            <p><i class="fa fa-check"></i> Undebated</p>
+          </div>
+        <% end %>
+      </div>
     </div>
+    <div class="large-4 columns">&nbsp;</div>
   </div>
 
-
-  <div class="row">
-    <div class="large-12 columns resolution-details">
+  <% if current_user.is?('can register resolutions') && @resolution.status_id == 1 %>
+    <div class="row">
       <br/><br/>
-      <p>Committee</p>
-      <%= @resolution.document_file_name %><br/><br/>
+      <div class="large-12 columns" style="border: 1px solid #ddd; padding: 20px 10px;">
+        <%= link_to '<i class="fa fa-download"></i>&nbsp;&nbsp;Download Resolution'.html_safe, @resolution.document.url, :class => "action-links" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to '<i class="fa fa-edit"></i>&nbsp;&nbsp;Edit Resolution Details'.html_safe, edit_conference_resolution_path(@resolution.conference, @resolution), :class => "action-links" %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
-              <div class="row"><br/><br/>
-              <div class="large-10 columns resolution-list-time">Uploaded on <%= @resolution.document_updated_at.strftime("%b %e, %Y %H:%m:%S %p UTC") %> by <%= @resolution.user.username %><br/><br/></div>
-            </div>
+  <% if current_user.is?('can approve resolutions') %>
+    <div class="row">
+      <br/><br/>
+      <div class="large-12 columns" style="border: 1px solid #ddd; padding: 20px 10px;">
+        <%= link_to '<i class="fa fa-download"></i>&nbsp;&nbsp;Download Resolution'.html_safe, @resolution.document.url, :class => "action-links" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to '<i class="fa fa-files-o"></i>&nbsp;&nbsp;Replace Resolution File'.html_safe, edit_conference_resolution_path(@resolution.conference, @resolution), :class => "action-links" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to '<i class="fa fa-thumbs-up"></i>&nbsp;&nbsp;Approve Resolution'.html_safe, edit_conference_resolution_path(@resolution.conference, @resolution), :class => "action-links" %>
+      </div>
+    </div>
+  <% end %>
 
-            <div class="row resolution-list-links"><div class="large-10 columns">
-              <br/><br/>
-              <i class="fa fa-download"></i>&nbsp;<%= link_to 'Download', @resolution.document.url, class: "major-link" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <% if (current_user.id == @resolution.user_id) && current_user.is?('can register resolutions')%>
-              <i class="fa fa-edit"></i>&nbsp;<%= link_to 'Edit', edit_conference_resolution_path(@resolution.conference, @resolution), class: "major-link" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <i class="fa fa-trash-o"></i>&nbsp;<%= link_to 'Delete', [@resolution.conference, @resolution], :confirm => 'Are you sure you want to delete this resolution? This action cannot be undone.', :method => :delete, class: "major-link" %>
-              <%end%>
+  <% if current_user.is?('can pass/fail resolutions') && (@resolution.status_id != 1) %>
+    <div class="row">
+      <br/><br/>
+      <div class="large-12 columns" style="border: 1px solid #ddd; padding: 20px 10px;">
+        <%= link_to '<i class="fa fa-download"></i>&nbsp;&nbsp;Download Resolution'.html_safe, @resolution.document.url, :class => "action-links" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to '<i class="fa fa-files-o"></i>&nbsp;&nbsp;Replace Resolution File'.html_safe, edit_conference_resolution_path(@resolution.conference, @resolution), :class => "action-links" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to '<i class="fa fa-hand-o-up"></i>&nbsp;&nbsp;Enter votes'.html_safe, edit_conference_resolution_path(@resolution.conference, @resolution), :class => "action-links" %>
+      </div>
+    </div>
+  <% end %>
 
-              <% if current_user.is?('can approve resolutions') || current_user.is?('can pass/fail resolutions') %>
-              <i class="fa fa-edit"></i>&nbsp;<%= link_to 'Edit', edit_conference_resolution_path(@resolution.conference, @resolution), class: "major-link" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <%end%>
-            </div></div>
+
+
 
 </div>

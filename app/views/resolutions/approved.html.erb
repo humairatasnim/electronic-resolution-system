@@ -1,34 +1,35 @@
 <!-- Sidebar -->
 <div class="sidebar">
+
   <div class="row">
     <div class="large-11 large-centered columns sidebar-header">
-        <%= image_tag("rms-logo.png", :alt => "logo", :width => "40") %>
+        <%= image_tag("thimunq-logo.png", :alt => "logo", :width => "160") %>
     </div>
   </div>
 
   <div class="row">
     <div class="large-10 large-centered columns sidebar-title">
-      <h2><%= current_user.conference.title %></h2>
+      <h2><%= link_to current_user.conference.title, root_url %></h2>
       <p><%= current_user.conference.start_date.strftime("%B %d, %Y") %> - <%= current_user.conference.end_date.strftime("%B %d, %Y") %></p>
     </div>
   </div>
 
-<% if current_user.is?("can register resolutions") %>
-  <div class="row">
-    <div class="large-10 large-centered columns">
-      <ul class="side-nav">
-        <li><%= link_to '<i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;&nbsp;Upload New Resolution'.html_safe, new_conference_resolution_path %></li>
-        <li><%= link_to '<i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;My Resolutions'.html_safe, my_resolutions_conference_resolutions_path %></li>
-      </ul>
+  <% if current_user.is?("can register resolutions") %>
+    <div class="row">
+      <div class="large-10 large-centered columns">
+        <ul class="side-nav">
+          <li><%= link_to '<i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;&nbsp;Upload New Resolution'.html_safe, new_conference_resolution_path %></li>
+          <li><%= link_to '<i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;My Resolutions'.html_safe, my_resolutions_conference_resolutions_path %></li>
+        </ul>
+      </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
 
   <div class="row">
     <div class="large-10 large-centered columns">
       <ul class="side-nav">
         <li><%= link_to '<i class="fa fa-list-ul"></i>&nbsp;&nbsp;&nbsp;&nbsp;All Resolutions'.html_safe, conference_resolutions_path %></li>
-        <li><%= link_to '<i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;&nbsp;Registered Resolutions'.html_safe, registered_conference_resolutions_path %></li>
+        <li><%= link_to '<i class="fa fa-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Registered Resolutions'.html_safe, registered_conference_resolutions_path %></li>
         <li class="active-link"><%= link_to '<i class="fa fa-thumbs-up"></i>&nbsp;&nbsp;&nbsp;&nbsp;Approved Resolutions'.html_safe, approved_conference_resolutions_path %></li>
         <li><%= link_to '<i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;&nbsp;Passed Resolutions'.html_safe, passed_conference_resolutions_path %></li>
         <li><%= link_to '<i class="fa fa-times"></i>&nbsp;&nbsp;&nbsp;&nbsp;Failed Resolutions'.html_safe, failed_conference_resolutions_path %></li>
@@ -52,113 +53,111 @@
   </div>
 </div>
 
-
 <!-- Main -->
 <div class="main-section">
 
-<div class="row search-fields">
-  <div class="large-6 columns">
-    <div class="row collapse">
-      <div class="large-11 columns">
-        <%= search_form_for @q, url: search_conference_resolutions_path, html: { method: :post } do |f| %>
-          <%= f.text_field :id_eq, placeholder: "Search by Resolution no." %>
+  <div class="row search-fields">
+
+    <div class="large-6 columns">      
+      <div class="row collapse">
+        <div class="large-11 columns search-box">
+          <%= search_form_for @q, url: search_conference_resolutions_path, html: { method: :post } do |f| %>
+            <%= f.text_field :id_eq, placeholder: "Search by Resolution no." %>
+        </div>
+        <div class="large-1 columns">
+          <button type="input" class="button postfix"><i class="fa fa-search"></i></button>
+          <% end %>
+        </div>
       </div>
-      <div class="large-1 columns">
-        <button type="input" class="button postfix"><i class="fa fa-search"></i></button>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  <div class="large-6 columns">
-    <div class="row collapse">
-      <div class="large-11 columns">
-        <%= search_form_for @q, url: search_conference_resolutions_path, html: { method: :post } do |f| %>
-          <%= f.collection_select :committee_id_eq, current_user.conference.committees, :id, :name,  { prompt: 'Search by Committee'} %>
-        
-      </div>
-      <div class="large-1 columns">
-        <button type="input" class="button postfix"><i class="fa fa-search"></i></button>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-
-  <!-- Header -->
-  <% if current_user.is?('can print resolutions') %>
-  <div class="row">
-    <div class="large-10 columns header">
-      <h1>Approved Resolutions</h1>
-    </div>
-    <div class="large-2 columns">
-      <%= link_to 'Download All', download_approved_conference_resolutions_path %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="large-12 columns">
-      <hr/>
-    </div>
-  </div>
-
-  <%else%>
-    <div class="row">
-    <div class="large-12 columns header">
-      <h1>Approved Resolutions</h1>
-      <hr/>
-    </div>
-  </div>
-  <% end %>
-
-  <!-- Resolutions -->
-  <% @resolutions.each do |reso| %>
-
-  <div class="row">
-    <div class="large-1 columns resolution-id" >
-      <h2><%= reso.id %></h2>
-    </div>
-    <div class="large-11 columns resolution-header">
-      <p><%= reso.committee.name %></p>
-      <h2><%= link_to reso.title, conference_resolution_path(reso.conference, reso) %></h2>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="large-9 large-offset-1 columns resolution-time">
-      <p><i class="fa fa-user"></i>&nbsp;&nbsp;<%= reso.user.username %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <i class="fa fa-clock-o"></i>&nbsp;&nbsp;<%= reso.document_updated_at.strftime('%e-%m-%Y %H:%m:%S %Z ') %></p>
     </div>
     
-    <% if reso.status_id == 1 %>
-      <div class="large-2 columns resolution-status registered">
-        <p><i class="fa fa-circle"></i> Registered</p>
+    <div class="large-6 columns">
+      <div class="row collapse">
+        <div class="large-11 columns search-box">
+          <%= search_form_for @q, url: search_conference_resolutions_path, html: { method: :post } do |f| %>
+            <%= f.collection_select :committee_id_eq, current_user.conference.committees, :id, :name,  { prompt: 'Search by Committee'} %>
+          
+        </div>
+        <div class="large-1 columns">
+          <button type="input" class="button postfix"><i class="fa fa-search"></i></button>
+          <% end %>
+        </div>
       </div>
-    <% elsif reso.status_id == 2 %>
-      <div class="large-2 columns resolution-status approved">
-        <p><i class="fa fa-circle"></i> Approved</p>
-      </div>
-    <% elsif reso.status_id == 3 %>
-      <div class="large-2 columns resolution-status passed">
-        <p><i class="fa fa-circle"></i> Passed</p>
-      </div>
-    <% elsif reso.status_id == 4 %>
-      <div class="large-2 columns resolution-status failed">
-        <p><i class="fa fa-circle"></i> Failed</p>
-      </div>
-    <% elsif reso.status_id == 5 %>
-      <div class="large-2 columns resolution-status undebated">
-        <p><i class="fa fa-circle"></i> Undebated</p>
-      </div>
-    <% end %>
+    </div>
   </div>
-
+    
   <div class="row">
+    <div class="large-8 columns header">
+      <h1>Approved Resolutions</h1>
+    </div>
+    <div class="large-4 columns header">
+      <% if current_user.is?('can print resolutions') %>
+        <h1><%= link_to '<i class="fa fa-download"></i>&nbsp;&nbsp;Download All'.html_safe, download_approved_conference_resolutions_path, :class => "download-link" %></h1>
+      <% end %>
+    </div>
     <div class="large-12 columns">
       <hr/>
     </div>
   </div>
 
+  <% if @resolutions.count == 0 %>
+    <div class="row">
+      <div class="large-12 columns no-resolutions" >
+        <p>There are no approved resolutions yet.</p>
+      </div>
+    </div>
   <% end %>
-  <!-- Resolutions - end -->
+
+  <% @resolutions.each do |reso| %>
+
+    <div class="row">
+      <div class="large-1 columns resolution-id" >
+        <h2><%= reso.id %></h2>
+      </div>
+      <div class="large-8 columns resolution-header">
+        <p><%= reso.committee.name %></p>
+        <h2><%= link_to reso.title, conference_resolution_path(reso.conference, reso) %></h2>
+      </div>
+      
+      <% if reso.status_id == 1 %>
+        <div class="large-2 columns resolution-status registered">
+          <p><i class="fa fa-circle"></i> Registered</p>
+        </div>
+      <% elsif reso.status_id == 2 %>
+        <div class="large-2 columns resolution-status approved">
+          <p><i class="fa fa-thumbs-up"></i> Approved</p>
+        </div>
+      <% elsif reso.status_id == 3 %>
+        <div class="large-2 columns resolution-status passed">
+          <p><i class="fa fa-check"></i> Passed</p>
+        </div>
+      <% elsif reso.status_id == 4 %>
+        <div class="large-2 columns resolution-status failed">
+          <p><i class="fa fa-cross"></i> Failed</p>
+        </div>
+      <% elsif reso.status_id == 5 %>
+        <div class="large-2 columns resolution-status undebated">
+          <p><i class="fa fa-check"></i> Undebated</p>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="row">
+      <div class="large-9 large-offset-1 columns resolution-user-details">
+        <p>
+          <i class="fa fa-globe"></i>&nbsp;&nbsp;<%= reso.country.name %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <i class="fa fa-user"></i>&nbsp;&nbsp;<%= reso.user.username %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <i class="fa fa-clock-o"></i>&nbsp;&nbsp;<%= reso.created_at.strftime('%e-%m-%Y %H:%m:%S %Z ') %>
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="large-12 columns">
+        <hr/>
+      </div>
+    </div>
+
+  <% end %>
+
 </div>

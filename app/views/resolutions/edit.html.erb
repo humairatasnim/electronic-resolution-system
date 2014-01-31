@@ -1,34 +1,35 @@
 <!-- Sidebar -->
 <div class="sidebar">
+
   <div class="row">
     <div class="large-11 large-centered columns sidebar-header">
-        <%= image_tag("rms-logo.png", :alt => "logo", :width => "40") %>
+        <%= image_tag("thimunq-logo.png", :alt => "logo", :width => "160") %>
     </div>
   </div>
 
   <div class="row">
     <div class="large-10 large-centered columns sidebar-title">
-      <h2><%= current_user.conference.title %></h2>
+      <h2><%= link_to current_user.conference.title, root_url %></h2>
       <p><%= current_user.conference.start_date.strftime("%B %d, %Y") %> - <%= current_user.conference.end_date.strftime("%B %d, %Y") %></p>
     </div>
   </div>
 
-<% if current_user.is?("can register resolutions") %>
-  <div class="row">
-    <div class="large-10 large-centered columns">
-      <ul class="side-nav">
-        <li><%= link_to '<i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;&nbsp;Upload New Resolution'.html_safe, new_conference_resolution_path %></li>
-        <li><%= link_to '<i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;My Resolutions'.html_safe, my_resolutions_conference_resolutions_path %></li>
-      </ul>
+  <% if current_user.is?("can register resolutions") %>
+    <div class="row">
+      <div class="large-10 large-centered columns">
+        <ul class="side-nav">
+          <li><%= link_to '<i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;&nbsp;Upload New Resolution'.html_safe, new_conference_resolution_path %></li>
+          <li><%= link_to '<i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;My Resolutions'.html_safe, my_resolutions_conference_resolutions_path %></li>
+        </ul>
+      </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
 
   <div class="row">
     <div class="large-10 large-centered columns">
       <ul class="side-nav">
-        <li class="active-link"><%= link_to '<i class="fa fa-list-ul"></i>&nbsp;&nbsp;&nbsp;&nbsp;All Resolutions'.html_safe, conference_resolutions_path %></li>
-        <li><%= link_to '<i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;&nbsp;Registered Resolutions'.html_safe, registered_conference_resolutions_path %></li>
+        <li><%= link_to '<i class="fa fa-list-ul"></i>&nbsp;&nbsp;&nbsp;&nbsp;All Resolutions'.html_safe, conference_resolutions_path %></li>
+        <li><%= link_to '<i class="fa fa-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Registered Resolutions'.html_safe, registered_conference_resolutions_path %></li>
         <li><%= link_to '<i class="fa fa-thumbs-up"></i>&nbsp;&nbsp;&nbsp;&nbsp;Approved Resolutions'.html_safe, approved_conference_resolutions_path %></li>
         <li><%= link_to '<i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;&nbsp;Passed Resolutions'.html_safe, passed_conference_resolutions_path %></li>
         <li><%= link_to '<i class="fa fa-times"></i>&nbsp;&nbsp;&nbsp;&nbsp;Failed Resolutions'.html_safe, failed_conference_resolutions_path %></li>
@@ -52,8 +53,8 @@
   </div>
 </div>
 
-
-<div class="main-section1">
+<!-- Main -->
+<div class="main-section-internal">
 
   <div class="row">
     <div class="large-12 columns header">
@@ -67,7 +68,7 @@
 
       <%= form_for [@resolution.conference, @resolution] do |f| %>
       <% if @resolution.errors.any? %>
-      <div class="custom-alert">
+      <div class="custom-alert-warning">
         <ul style="padding:10px;">
           <% @resolution.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
@@ -79,65 +80,120 @@
     </div>
   </div>
 
-  <% if current_user.is?("can approve resolutions") %>
-  <div class="row form-item">
-    <div class="large-3 columns form-header">
-      <p>Replace Document</p>
-    </div>
-    <div class="large-5 columns">
-      <%= f.label :document, "Select the file containing the resolution", class: "form-label" %>
-      <br/>
-      <%= f.file_field :document %>
-    </div>
-    <div class="large-4 columns">&nbsp;</div>
-  </div>
 
-  <div class="row form-item">
-    <div class="large-3 columns form-header">
-      <p>Change Status</p>
+  <% if current_user.is?("can register resolutions") %>
+    <div class="row form-item">
+      <div class="large-5 columns">
+        <%= f.label :title, "Title of the resolution", class: "form-label" %>
+        <br/>
+        <%= f.text_field :title %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
     </div>
-    <div class="large-5 columns">
-      <%= f.label :status, "Update the status of the resolution", class: "form-label" %>
-      <br/>
-      <%= f.collection_select :status_id, Status.where(:id =>1..2), :id, :name %>
+
+    <div class="row form-item">
+      <div class="large-5 columns">
+        <%= f.label :committee_id, "Committee that the resolution belongs to", class: "form-label" %>
+        <br/>
+        <%= f.collection_select :committee_id, @resolution.conference.committees, :id, :name %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
     </div>
-    <div class="large-4 columns">&nbsp;</div>
-  </div>
+
+    <div class="row form-item">
+      <div class="large-5 columns">
+        <%= f.label :country_id, "Main submitting country", class: "form-label" %>
+        <br/>
+        <%= f.collection_select :country_id, Country.all, :id, :name  %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
+    </div>
+
+    <div class="row form-item">
+      <div class="large-5 columns">
+        <%= f.label :document, "File containing the resolution", class: "form-label" %>
+        <br/>
+        <%= f.file_field :document %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
+    </div>
+  <% end %>
+
+  <% if current_user.is?("can approve resolutions") %>
+    <div class="row form-item">
+      <div class="large-3 columns form-header">
+        <p>Replace Resolution file</p>
+      </div>
+      <div class="large-5 columns">
+        <%= f.label :document, "Select the file containing the updated resolution", class: "form-label" %>
+        <br/>
+        <%= f.file_field :document %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
+    </div>
+
+    <div class="row form-item">
+      <div class="large-3 columns form-header">
+        <p>Approve Resolution</p>
+      </div>
+      <div class="large-5 columns">
+        <%= f.label :status, "Update the status of the resolution", class: "form-label" %>
+        <br/>
+        <%= f.collection_select :status_id, Status.where(:id =>1..2), :id, :name %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
+    </div>
   <% end %>
 
   <% if current_user.is?("can pass/fail resolutions") %>
-  <div class="row form-item">
-    <div class="large-3 columns form-header">
-      <p>Change Status</p>
+    <div class="row form-item">
+      <div class="large-3 columns form-header">
+        <p>Replace Resolution file</p>
+      </div>
+      <div class="large-5 columns">
+        <%= f.label :document, "Select the file containing the updated resolution", class: "form-label" %>
+        <br/>
+        <%= f.file_field :document %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
     </div>
-    <div class="large-5 columns">
-      <%= f.label :status, "Update the status of the resolution", class: "form-label" %>
-      <br/>
-      <%= f.collection_select :status_id, Status.where(:id =>2..5), :id, :name %>
+    
+    <div class="row form-item">
+      <div class="large-3 columns form-header">
+        <p>Change Status</p>
+      </div>
+      <div class="large-5 columns">
+        <%= f.label :status, "Update the status of the resolution", class: "form-label" %>
+        <br/>
+        <%= f.collection_select :status_id, Status.where(:id =>2..5), :id, :name %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
     </div>
-    <div class="large-4 columns">&nbsp;</div>
-  </div>
 
-  <div class="row form-item">
-    <div class="large-3 columns form-header">
-      <p>Add Voting Details</p>
+    <div class="row form-item">
+      <div class="large-3 columns form-header">
+        <p>Add Voting Details</p>
+      </div>
+      <div class="large-5 columns">
+        <%= f.label :num_votes_for, "No. of votes for the resolution", class: "form-label" %>
+        <br/>
+        <%= f.number_field :num_votes_for %>
+        <br/>
+        <%= f.label :num_votes_against, "No. of votes against the resolution", class: "form-label" %>
+        <br/>
+        <%= f.number_field :num_votes_against %>
+        <br/>
+        <%= f.label :num_abstentions, "No. of abstentions", class: "form-label" %>
+        <br/>
+        <%= f.number_field :num_abstentions %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
     </div>
-    <div class="large-5 columns">
-      <%= f.label :votes_for, "No. of votes for the resolution", class: "form-label" %>
-      <br/>
-      <%= f.number_field :votes_for %>
-      <br/>
-      <%= f.label :votes_against, "No. of votes against the resolution", class: "form-label" %>
-      <br/>
-      <%= f.number_field :votes_against %>
-    </div>
-    <div class="large-4 columns">&nbsp;</div>
-  </div>
   <% end %>
 
   <div class="row form-button">
     <div class="large-8 columns">
-      <button type="submit" class="button"><i class="fa fa-edit"></i>&nbsp;&nbsp;Update Resolution</button>
+      <button type="submit" class="button"><i class="fa fa-save"></i>&nbsp;&nbsp;Save Changes</button>
     </div>
   </div>
 

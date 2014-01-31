@@ -1,34 +1,35 @@
 <!-- Sidebar -->
 <div class="sidebar">
+
   <div class="row">
     <div class="large-11 large-centered columns sidebar-header">
-        <%= image_tag("rms-logo.png", :alt => "logo", :width => "40") %>
+        <%= image_tag("thimunq-logo.png", :alt => "logo", :width => "160") %>
     </div>
   </div>
 
   <div class="row">
     <div class="large-10 large-centered columns sidebar-title">
-      <h2><%= current_user.conference.title %></h2>
+      <h2><%= link_to current_user.conference.title, root_url %></h2>
       <p><%= current_user.conference.start_date.strftime("%B %d, %Y") %> - <%= current_user.conference.end_date.strftime("%B %d, %Y") %></p>
     </div>
   </div>
 
-<% if current_user.is?("can register resolutions") %>
-  <div class="row">
-    <div class="large-10 large-centered columns">
-      <ul class="side-nav">
-        <li class="active-link"><%= link_to '<i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;&nbsp;Upload New Resolution'.html_safe, new_conference_resolution_path %></li>
-        <li><%= link_to '<i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;My Resolutions'.html_safe, my_resolutions_conference_resolutions_path %></li>
-      </ul>
+  <% if current_user.is?("can register resolutions") %>
+    <div class="row">
+      <div class="large-10 large-centered columns">
+        <ul class="side-nav">
+          <li class="active-link"><%= link_to '<i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;&nbsp;Upload New Resolution'.html_safe, new_conference_resolution_path %></li>
+          <li><%= link_to '<i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;My Resolutions'.html_safe, my_resolutions_conference_resolutions_path %></li>
+        </ul>
+      </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
 
   <div class="row">
     <div class="large-10 large-centered columns">
       <ul class="side-nav">
         <li><%= link_to '<i class="fa fa-list-ul"></i>&nbsp;&nbsp;&nbsp;&nbsp;All Resolutions'.html_safe, conference_resolutions_path %></li>
-        <li><%= link_to '<i class="fa fa-upload"></i>&nbsp;&nbsp;&nbsp;&nbsp;Registered Resolutions'.html_safe, registered_conference_resolutions_path %></li>
+        <li><%= link_to '<i class="fa fa-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Registered Resolutions'.html_safe, registered_conference_resolutions_path %></li>
         <li><%= link_to '<i class="fa fa-thumbs-up"></i>&nbsp;&nbsp;&nbsp;&nbsp;Approved Resolutions'.html_safe, approved_conference_resolutions_path %></li>
         <li><%= link_to '<i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;&nbsp;Passed Resolutions'.html_safe, passed_conference_resolutions_path %></li>
         <li><%= link_to '<i class="fa fa-times"></i>&nbsp;&nbsp;&nbsp;&nbsp;Failed Resolutions'.html_safe, failed_conference_resolutions_path %></li>
@@ -53,21 +54,21 @@
 </div>
 
 <!-- Main -->
-<div class="main-section1">
+<div class="main-section-internal">
 
   <div class="row">
     <div class="large-12 columns header">
-      <h1>Upload New Resolution</h1>
+      <h1>New Resolution</h1>
       <hr/>
     </div>
   </div>
 
   <div class="row">
-    <div class="large-6 columns">
+    <div class="large-5 columns">
 
       <%= form_for [@resolution.conference, @resolution] do |f| %>
       <% if @resolution.errors.any? %>
-      <div class="custom-alert">
+      <div class="custom-alert-warning">
         <ul style="padding:10px;">
           <% @resolution.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
@@ -82,46 +83,40 @@
   <%= f.hidden_field :user_id, :value => current_user.id %>
 
   <div class="row form-item">
-    <div class="large-1 columns form-header">
-      <p>STEP 1</p>
-    </div>
     <div class="large-5 columns">
-      <%= f.label :title, "Enter the title of your resolution", class: "form-label" %>
+      <%= f.label :title, "Title of the resolution", class: "form-label" %>
       <br/>
       <%= f.text_field :title %>
     </div>
-    <div class="large-6 columns">&nbsp;</div>
   </div>
 
   <div class="row form-item">
-    <div class="large-1 columns form-header">
-      <p>STEP 2</p>
-    </div>
     <div class="large-5 columns">
-      <%= f.label :committee_id, "Select the committee your resolution belongs to", class: "form-label" %>
+      <%= f.label :committee_id, "Committee that the resolution belongs to", class: "form-label" %>
       <br/>
       <%= f.collection_select :committee_id, @resolution.conference.committees, :id, :name, :prompt => "" %>
     </div>
-    <div class="large-6 columns">&nbsp;</div>
   </div>
 
+  <div class="row form-item">
+    <div class="large-5 columns">
+      <%= f.label :country_id, "Main submitting country", class: "form-label" %>
+      <br/>
+      <%= f.collection_select :country_id, Country.all, :id, :name, :prompt => ""  %>
+    </div>
+  </div>
 
   <div class="row form-item">
-    <div class="large-1 columns form-header">
-      <p>STEP 3</p>
-    </div>
     <div class="large-5 columns">
-      <%= f.label :document, "Select the file containing the resolution", class: "form-label" %>
+      <%= f.label :document, "File containing the resolution", class: "form-label" %>
       <br/>
       <%= f.file_field :document %>
     </div>
-    <div class="large-6 columns">&nbsp;</div>
   </div>
 
   <div class="row form-button">
     <div class="large-8 columns">
       <button type="submit" class="button"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload Resolution</button>
-
     </div>
   </div>
 

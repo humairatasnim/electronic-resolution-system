@@ -1,5 +1,8 @@
 Eresolutions::Application.routes.draw do
 
+  resources :countries
+
+
   resources :statuses
 
 
