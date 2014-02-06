@@ -88,14 +88,17 @@ ActiveRecord::Schema.define(:version => 20140127081740) do
     t.integer  "conference_id"
     t.integer  "committee_id"
     t.integer  "country_id"
-    t.integer  "status_id",          :default => 1
+    t.integer  "status_id",             :default => 1
     t.integer  "user_id"
     t.integer  "num_votes_for"
     t.integer  "num_votes_against"
     t.integer  "num_abstentions"
     t.string   "document_file_name"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.string   "document_content_type"
+    t.integer  "document_file_size"
+    t.datetime "document_updated_at"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
   end
 
   add_index "resolutions", ["conference_id"], :name => "index_resolutions_on_conference_id"

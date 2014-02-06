@@ -15,6 +15,9 @@ class CreateResolutions < ActiveRecord::Migration
       t.integer :num_abstentions
 
       t.string :document_file_name
+      t.string :document_content_type
+      t.integer :document_file_size
+      t.datetime :document_updated_at
 
       t.timestamps
     end
