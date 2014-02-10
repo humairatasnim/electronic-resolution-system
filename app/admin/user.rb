@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  scope_to :current_admin_user, :if => proc{ current_admin_user.role?('Conference Manager') }
+  scope_to :current_admin_user, :if => proc{ current_admin_user.role == 'Conference Manager' }
 
   index do
     column :conference
@@ -19,7 +19,7 @@ ActiveAdmin.register User do
 
   form do |f|
     f.inputs "User Details" do
-      if (current_admin_user.role?('Conference Manager'))
+      if (current_admin_user.role == 'Conference Manager')
         f.input :conference_id, :as => :radio, :collection => Conference.where(:admin_user_id => current_admin_user.id)
       else
         f.input :conference_id, :as => :radio, :collection => Conference.all
