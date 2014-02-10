@@ -1591,7 +1591,7 @@ button, .button {
   border-width: 0px;
   cursor: pointer;
   font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-  font-weight: 700;
+  font-weight: 600 !important;
   line-height: normal;
   margin: 0 0 1.25rem;
   position: relative;

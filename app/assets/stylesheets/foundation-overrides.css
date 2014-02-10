@@ -11,7 +11,7 @@
   background:#334D5C; 
 }
 .sidebar-header {
-	padding: 60px 0 30px 0;
+	padding: 30px 0 30px 0;
 	text-align: center;
 }
 .sidebar-title {
@@ -32,6 +32,9 @@
 .sidebar ul li a {
 	color:#fff;
 	font-size:1em;
+  -webkit-transition: color 0.45s ease-in-out;
+  -moz-transition: color 0.45s ease-in-out;
+  transition: color 0.45s ease-in-out;
 }
 .sidebar .active-link a {
 	color:#57E0C6;
@@ -43,10 +46,10 @@
 .custom-divider hr {
 	display: block;
 	height: 0.25px;
-    border: 0;
-    border-top: 1px solid #4B7187;
-    margin: 1em 0;
-    padding: 0;
+  border: 0;
+  border-top: 1px solid #4B7187;
+  margin: 1em 0;
+  padding: 0;
 }
 
 /*******************************************************
@@ -72,13 +75,18 @@
 .search-box input[type="text"] {
   font-size: 0.875rem;
   height: 2.3125rem;
-  background-color: #F7F7F7;
-  border: 1px solid #eee;
+  background-color: #fdfdfd;
+  -webkit-transition: border-color 0.45s background-color 0.45s ease-in-out;
+  -moz-transition: border-color 0.45s background-color 0.45s ease-in-out;
+  transition: border-color 0.45s background-color 0.45s ease-in-out;
 }
-.search-box input[type="text"]:focus {
-  background-color: #FFF;
-  border: 1px solid #eee;
-}
+  .search-box input[type="text"]:hover {
+    border: 1px solid #999;
+  }
+  .search-box input[type="text"]:focus {
+    background-color: #FFF;
+  }
+
 .search-box ::-webkit-input-placeholder {
    color: rgba(0, 0, 0, 0.75);
 }
@@ -94,19 +102,20 @@
 .search-box select {
   font-size: 0.875rem;
   height: 2.3125rem;
-  background-color: #F7F7F7;
-  border: 1px solid #eee;
-  color: rgba(0, 0, 0, 0.75); 
+  background-color: #fdfdfd;
+  color: rgba(0, 0, 0, 0.75);
+  -webkit-transition: border-color 0.45s ease-in-out;
+  -moz-transition: border-color 0.45s ease-in-out;
+  transition: border-color 0.45s ease-in-out; 
 }
-.search-box select:hover {
-  border: 1px solid #eee;
-  background-color: #F7F7F7;
-}
-.search-box select:focus {
-  border: 1px solid #eee;
-  outline: none;
-  background-color: #fff;
-}
+  .search-box select:hover {
+    border: 1px solid #999;
+  }
+  .search-box select:focus {
+    border: 1px solid #999;
+    background-color: #fff;
+    outline: none;
+  }
 
 /*******************************************************
 	Content
@@ -139,8 +148,8 @@
 	font-weight:400;
 	color:#ff6f1f;
 	overflow:hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;  
+  text-overflow:ellipsis;
+  white-space: nowrap;  
 }
 .resolution-header h2 a {
 	color:#ff6f1f;
@@ -189,6 +198,29 @@
 .form-item {
 	padding: 10px 0;
 }
+.form-item input[type="text"] {
+  background-color: #fdfdfd;
+ }
+  .form-item input[type="text"]:hover {
+    border: 1px solid #999;
+  }
+  .form-item input[type="text"]:focus {
+    background: #fff;
+  }
+.form-item select {
+  background-color: #fdfdfd;
+  -webkit-transition: border-color 0.45s ease-in-out;
+  -moz-transition: border-color 0.45s ease-in-out;
+  transition: border-color 0.45s ease-in-out;
+}
+  .form-item select:hover {
+    border: 1px solid #999;
+  }
+  .form-item select:focus {
+    outline: none;
+    background-color: #fff;
+    border: 1px solid #999;
+  }
 .form-header p {
 	line-height: 0;
 	font-size:1em;
@@ -259,6 +291,7 @@
 .signinform-header h3 {
 	color: #334D5C;
 	font-weight: 400;
+	font-size: 24px;
 }
 .signinform-fields {
 	margin-top: 40px;
@@ -318,17 +351,17 @@
     opacity: 0;
     z-index: 0;
 	-webkit-backface-visibility: hidden;
-    -webkit-animation: imageAnimation 23s linear infinite 0s;
+    -webkit-animation: imageAnimation 24s linear infinite 0s;
     -moz-animation: imageAnimation 24s linear infinite 0s;
     -o-animation: imageAnimation 24s linear infinite 0s;
     -ms-animation: imageAnimation 24s linear infinite 0s;
-    animation: imageAnimation 23s linear infinite 0s; 
+    animation: imageAnimation 24s linear infinite 0s; 
 }
 .cb-slideshow li:nth-child(1) span { 
-    background-image: url(https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-ash3/t1/s720x720/1797970_708187585879870_177227463_n.jpg) 
+	background-image: url('1.JPG');
 }
 .cb-slideshow li:nth-child(2) span { 
-    background-image: url(https://scontent-a.xx.fbcdn.net/hphotos-frc1/t1/s720x720/1656181_708187635879865_1299758633_n.jpg);
+    background-image: url('2.JPG');
     -webkit-animation-delay: 6s;
     -moz-animation-delay: 6s;
     -o-animation-delay: 6s;
@@ -336,12 +369,20 @@
     animation-delay: 6s; 
 }
 .cb-slideshow li:nth-child(3) span { 
-    background-image: url(https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-frc3/t1/s720x720/1798858_708187769213185_1424496510_n.jpg);
+    background-image: url('3.JPG');
     -webkit-animation-delay: 12s;
     -moz-animation-delay: 12s;
     -o-animation-delay: 12s;
     -ms-animation-delay: 12s;
     animation-delay: 12s; 
+}
+.cb-slideshow li:nth-child(4) span { 
+    background-image: url('4.JPG');
+    -webkit-animation-delay: 18s;
+    -moz-animation-delay: 18s;
+    -o-animation-delay: 18s;
+    -ms-animation-delay: 18s;
+    animation-delay: 18s; 
 }
 
 

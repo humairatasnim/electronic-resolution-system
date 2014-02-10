@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :resolutions, :dependent => :delete_all
   
   validates_uniqueness_of :username
+  validates_presence_of :username, :password, :password_confirmation, :roles, :conference
   
   ROLES = %w[can\ register\ resolutions can\ approve\ resolutions can\ pass/fail\ resolutions can\ print\ resolutions full\ access\ rights]
 
