@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  scope_to :current_admin_user, :if => proc{ current_admin_user.role == 'Conference Manager' }
+  scope_to :current_admin_user, :if => proc{ current_admin_user.role?('Conference Manager') }
 
   index do
     column :conference

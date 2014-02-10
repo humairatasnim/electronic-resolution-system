@@ -13,7 +13,7 @@ class AdminUser < ActiveRecord::Base
   has_many :conferences
   has_many :users
 
-  ROLES = %w(Conference\ Manager)
+  ROLES = %w(Conference\ Manager Super\ Admin)
 
   def role?(base_role)
     return false unless role # A user have a role attribute. If not set, the user does not have any roles.
