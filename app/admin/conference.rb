@@ -5,10 +5,12 @@ ActiveAdmin.register Conference do
   index do
     column :id
     column :title
+    column "Conference Manager" do |conference|
+      conference.admin_user.full_name
+    end
     column "School" do |conference|
       conference.admin_user.school
     end
-    column :admin_user
     column "Committees" do |conference|
     	conference.committees.map{ |p| p.name }.join('<br />').html_safe
     end
@@ -25,7 +27,7 @@ ActiveAdmin.register Conference do
  form do |f|
     f.inputs "Conference Details" do
       f.input :title
-      f.input :admin_user_id, :as => :select, :collection => AdminUser.where(:role => "Conference Manager").map{ |admin_user| [admin_user.school, admin_user.id] }, :label => "School", :required => true
+      f.input :admin_user_id, :as => :select, :collection => AdminUser.where(:role => "Conference Manager").map{ |admin_user| [admin_user.full_name, admin_user.id] }, :label => "Conference Manager", :required => true
       f.input :start_date, :order => [:day, :month, :year], :start_year => Date.today.year, :end_year => 8.years.from_now.year
       f.input :end_date, :order => [:day, :month, :year], :start_year => Date.today.year, :end_year => 8.years.from_now.year
     end
@@ -35,9 +37,6 @@ ActiveAdmin.register Conference do
     f.inputs "Description (optional)" do
       f.input :description
     end
-    # f.inputs "Conference Status" do
-    #   f.input :is_active, :label => "Active?"
-    # end
     f.actions
   end
 
@@ -45,10 +44,12 @@ ActiveAdmin.register Conference do
   show do |ad|
     attributes_table do
       row :title
+      row "Conference Manager" do |conference|
+        conference.admin_user.full_name
+      end
       row "School" do |conference|
         conference.admin_user.school
       end
-      row :admin_user
       row "Committees" do |conference|
         conference.committees.map{ |p| p.name }.join('<br />').html_safe
       end
