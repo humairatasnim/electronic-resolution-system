@@ -81,7 +81,7 @@ Eresolutions::Application.configure do
       :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
       :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
     },
-    :path => ':attachment/:id/:style.:extension',
+    :path => '/:conference_id/:status_name/:basename.:extension',
     :url => ':s3_domain_url',
     :s3_host_name => 's3.amazonaws.com'
   }

@@ -36,7 +36,7 @@ Eresolutions::Application.configure do
   config.assets.debug = true
   
   PAPERCLIP_STORAGE_OPTS = {
-    :path => "public/system/:class/:conference_title/:status_name/:filename",
+    :path => "public/system/:class/:conference_id/:status_name/:filename",
     :url => "/system/:class/:conference_title/:status_name/:basename.:extension"
   }
 end

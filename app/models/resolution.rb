@@ -1,7 +1,7 @@
 class Resolution < ActiveRecord::Base
 
-  Paperclip.interpolates :conference_title do |attachment, style|
-    attachment.instance.conference.title
+  Paperclip.interpolates :conference_id do |attachment, style|
+    attachment.instance.conference.id
   end
 
   Paperclip.interpolates :status_name do |attachment, style|
