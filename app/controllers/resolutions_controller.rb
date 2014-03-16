@@ -139,125 +139,124 @@ class ResolutionsController < InheritedResources::Base
   end
 
   # Download methods
-
   def download_all
-    require 'zip/zip'
-    require 'zip/zipfilesystem'
-
+    require 'zip'
+    GC.disable
     conference = Conference.find(params[:conference_id])
     @resolutions = conference.resolutions
 
-    t = Tempfile.new('tmp-zip-' + request.remote_ip)
-    Zip::ZipOutputStream.open(t.path) do |zos|
-      @resolutions.each do |file|
-        zos.put_next_entry(file.document_file_name)
-        zos.print IO.read(file.document.path)
-      end
+    zip_filename = "#{conference.title} - All.zip"
+    tmp_filename = "#{Rails.root}/tmp/#{zip_filename}"
+    Zip::File.open(tmp_filename, Zip::File::CREATE) do |zip|
+      @resolutions.each { |e| 
+        document = Paperclip.io_adapters.for(e.document)
+        zip.add("#{e.document.original_filename}", document.path)
+      }
     end
-
-    send_file t.path, :type => "application/zip", :filename => "AllResolutions.zip"
-
-    t.close
+    send_data(File.open(tmp_filename, "rb+").read, :type => 'application/zip', :disposition => 'attachment', :filename => zip_filename)
+    File.delete tmp_filename
+    GC.enable
+    GC.start
   end
 
   def download_registered
-    require 'zip/zip'
-    require 'zip/zipfilesystem'
-
+    require 'zip'
+    GC.disable
     conference = Conference.find(params[:conference_id])
     @resolutions = conference.resolutions.where(:status_id => 1)
 
-    t = Tempfile.new('tmp-zip-' + request.remote_ip)
-    Zip::ZipOutputStream.open(t.path) do |zos|
-      @resolutions.each do |file|
-        zos.put_next_entry(file.document_file_name)
-        zos.print IO.read(file.document.path)
-      end
+    zip_filename = "#{conference.title} - Registered.zip"
+    tmp_filename = "#{Rails.root}/tmp/#{zip_filename}"
+    Zip::File.open(tmp_filename, Zip::File::CREATE) do |zip|
+      @resolutions.each { |e| 
+        document = Paperclip.io_adapters.for(e.document)
+        zip.add("#{e.document.original_filename}", document.path)
+      }
     end
-
-    send_file t.path, :type => "application/zip", :filename => "RegisteredResolutions.zip"
-
-    t.close
+    send_data(File.open(tmp_filename, "rb+").read, :type => 'application/zip', :disposition => 'attachment', :filename => zip_filename)
+    File.delete tmp_filename
+    GC.enable
+    GC.start
   end
 
   def download_approved
-    require 'zip/zip'
-    require 'zip/zipfilesystem'
-
+    require 'zip'
+    GC.disable
     conference = Conference.find(params[:conference_id])
     @resolutions = conference.resolutions.where(:status_id => 2)
 
-    t = Tempfile.new('tmp-zip-' + request.remote_ip)
-    Zip::ZipOutputStream.open(t.path) do |zos|
-      @resolutions.each do |file|
-        zos.put_next_entry(file.document_file_name)
-        zos.print IO.read(file.document.path)
-      end
+    zip_filename = "#{conference.title} - Approved.zip"
+    tmp_filename = "#{Rails.root}/tmp/#{zip_filename}"
+    Zip::File.open(tmp_filename, Zip::File::CREATE) do |zip|
+      @resolutions.each { |e| 
+        document = Paperclip.io_adapters.for(e.document)
+        zip.add("#{e.document.original_filename}", document.path)
+      }
     end
-
-    send_file t.path, :type => "application/zip", :filename => "ApprovedResolutions.zip"
-
-    t.close
+    send_data(File.open(tmp_filename, "rb+").read, :type => 'application/zip', :disposition => 'attachment', :filename => zip_filename)
+    File.delete tmp_filename
+    GC.enable
+    GC.start
   end
 
   def download_passed
-    require 'zip/zip'
-    require 'zip/zipfilesystem'
-
+    require 'zip'
+    GC.disable
     conference = Conference.find(params[:conference_id])
     @resolutions = conference.resolutions.where(:status_id => 3)
 
-    t = Tempfile.new('tmp-zip-' + request.remote_ip)
-    Zip::ZipOutputStream.open(t.path) do |zos|
-      @resolutions.each do |file|
-        zos.put_next_entry(file.document_file_name)
-        zos.print IO.read(file.document.path)
-      end
+    zip_filename = "#{conference.title} - Passed.zip"
+    tmp_filename = "#{Rails.root}/tmp/#{zip_filename}"
+    Zip::File.open(tmp_filename, Zip::File::CREATE) do |zip|
+      @resolutions.each { |e| 
+        document = Paperclip.io_adapters.for(e.document)
+        zip.add("#{e.document.original_filename}", document.path)
+      }
     end
-
-    send_file t.path, :type => "application/zip", :filename => "PassedResolutions.zip"
-
-    t.close
+    send_data(File.open(tmp_filename, "rb+").read, :type => 'application/zip', :disposition => 'attachment', :filename => zip_filename)
+    File.delete tmp_filename
+    GC.enable
+    GC.start
   end
 
   def download_failed
-    require 'zip/zip'
-    require 'zip/zipfilesystem'
-
+    require 'zip'
+    GC.disable
     conference = Conference.find(params[:conference_id])
     @resolutions = conference.resolutions.where(:status_id => 4)
 
-    t = Tempfile.new('tmp-zip-' + request.remote_ip)
-    Zip::ZipOutputStream.open(t.path) do |zos|
-      @resolutions.each do |file|
-        zos.put_next_entry(file.document_file_name)
-        zos.print IO.read(file.document.path)
-      end
+    zip_filename = "#{conference.title} - Failed.zip"
+    tmp_filename = "#{Rails.root}/tmp/#{zip_filename}"
+    Zip::File.open(tmp_filename, Zip::File::CREATE) do |zip|
+      @resolutions.each { |e| 
+        document = Paperclip.io_adapters.for(e.document)
+        zip.add("#{e.document.original_filename}", document.path)
+      }
     end
-
-    send_file t.path, :type => "application/zip", :filename => "FailedResolutions.zip"
-
-    t.close
+    send_data(File.open(tmp_filename, "rb+").read, :type => 'application/zip', :disposition => 'attachment', :filename => zip_filename)
+    File.delete tmp_filename
+    GC.enable
+    GC.start
   end
-  
-  def download_undebated
-    require 'zip/zip'
-    require 'zip/zipfilesystem'
 
+  def download_undebated
+    require 'zip'
+    GC.disable
     conference = Conference.find(params[:conference_id])
     @resolutions = conference.resolutions.where(:status_id => 5)
 
-    t = Tempfile.new('tmp-zip-' + request.remote_ip)
-    Zip::ZipOutputStream.open(t.path) do |zos|
-      @resolutions.each do |file|
-        zos.put_next_entry(file.document_file_name)
-        zos.print IO.read(file.document.path)
-      end
+    zip_filename = "#{conference.title} - Undebated.zip"
+    tmp_filename = "#{Rails.root}/tmp/#{zip_filename}"
+    Zip::File.open(tmp_filename, Zip::File::CREATE) do |zip|
+      @resolutions.each { |e| 
+        document = Paperclip.io_adapters.for(e.document)
+        zip.add("#{e.document.original_filename}", document.path)
+      }
     end
-
-    send_file t.path, :type => "application/zip", :filename => "UndebatedResolutions.zip"
-
-    t.close
+    send_data(File.open(tmp_filename, "rb+").read, :type => 'application/zip', :disposition => 'attachment', :filename => zip_filename)
+    File.delete tmp_filename
+    GC.enable
+    GC.start
   end
 
 end
