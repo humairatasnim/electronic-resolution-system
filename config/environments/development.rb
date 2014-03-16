@@ -37,6 +37,6 @@ Eresolutions::Application.configure do
   
   PAPERCLIP_STORAGE_OPTS = {
     :path => "public/system/:class/:conference_id/:status_name/:filename",
-    :url => "/system/:class/:conference_title/:status_name/:basename.:extension"
+    :url => "/system/:class/:conference_id/:status_name/:basename.:extension"
   }
 end
