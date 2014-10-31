@@ -80,8 +80,79 @@
     </div>
   </div>
 
+  <% if current_user.is?("can register resolutions") && current_user.is?("can pass/fail resolutions") %>
+    <div class="row form-item">
+      <div class="large-5 columns">
+        <%= f.label :title, "Title of the resolution", class: "form-label" %>
+        <br/>
+        <%= f.text_field :title %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
+    </div>
 
-  <% if current_user.is?("can register resolutions") %>
+    <div class="row form-item">
+      <div class="large-5 columns">
+        <%= f.label :committee_id, "Committee that the resolution belongs to", class: "form-label" %>
+        <br/>
+        <%= f.collection_select :committee_id, @resolution.conference.committees, :id, :name %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
+    </div>
+
+    <div class="row form-item">
+      <div class="large-5 columns">
+        <%= f.label :country_id, "Main submitting country", class: "form-label" %>
+        <br/>
+        <%= f.collection_select :country_id, Country.all, :id, :name  %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
+    </div>
+
+    <div class="row form-item">
+      <div class="large-5 columns">
+        <%= f.label :document, "File containing the resolution", class: "form-label" %>
+        <br/>
+        <%= f.file_field :document %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
+    </div>
+
+    <div class="row form-item">
+      <div class="large-3 columns form-header">
+        <p>Change Status</p>
+      </div>
+      <div class="large-5 columns">
+        <%= f.label :status, "Update the status of the resolution", class: "form-label" %>
+        <br/>
+        <%= f.collection_select :status_id, Status.where(:id =>2..5), :id, :name %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
+    </div>
+
+    <div class="row form-item">
+      <div class="large-3 columns form-header">
+        <p>Add Voting Details</p>
+      </div>
+      <div class="large-5 columns">
+        <%= f.label :num_votes_for, "No. of votes for the resolution", class: "form-label" %>
+        <br/>
+        <%= f.number_field :num_votes_for %>
+        <br/>
+        <%= f.label :num_votes_against, "No. of votes against the resolution", class: "form-label" %>
+        <br/>
+        <%= f.number_field :num_votes_against %>
+        <br/>
+        <%= f.label :num_abstentions, "No. of abstentions", class: "form-label" %>
+        <br/>
+        <%= f.number_field :num_abstentions %>
+      </div>
+      <div class="large-4 columns">&nbsp;</div>
+    </div>
+
+  <% end %>
+
+
+  <% if current_user.is?("can register resolutions") && !current_user.is?("can pass/fail resolutions") %>
     <div class="row form-item">
       <div class="large-5 columns">
         <%= f.label :title, "Title of the resolution", class: "form-label" %>
@@ -145,7 +216,7 @@
     </div>
   <% end %>
 
-  <% if current_user.is?("can pass/fail resolutions") %>
+  <% if current_user.is?("can pass/fail resolutions") && !current_user.is?("can register resolutions") %>
     <div class="row form-item">
       <div class="large-3 columns form-header">
         <p>Replace Resolution file</p>
